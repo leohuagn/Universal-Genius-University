@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review - Universal Genius University</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://i.imgur.com/0vTA98n.png" type="image/png">
+    
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #ffffff; margin: 0; padding: 0; color: #333; }
+        /* Liquid Glass Navigation */
+nav {
+    background: rgba(255, 255, 255, 0.65); /* 半透明白 */
+    backdrop-filter: blur(20px); /* 毛玻璃模糊 */
+    -webkit-backdrop-filter: blur(20px); /* Safari 兼容 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    border-radius: 20px; /* 导航栏整体圆角 */
+    margin: 20px auto;
+    max-width: 1200px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
+nav .logo-link {
+    margin-right: 40px;
+}
+
+nav .logo {
+    height: 50px;
+    transition: transform 0.3s ease;
+}
+
+nav .logo:hover {
+    transform: scale(1.1);
+}
+
+nav .nav-links {
+    position: relative;
+    display: flex;
+    gap: 30px;
+}
+
+nav .nav-links a {
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: normal;
+    padding: 10px 20px;
+    border-radius: 20px; /* 每个链接圆角 */
+    transition: color 0.4s ease;
+    z-index: 2;
+    position: relative;
+}
+
+nav .nav-links a.active {
+    color: #ffffff !important; /* 选中时白色加粗 */
+    font-weight: bold;
+}
+
+nav .indicator {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 44px;
+    background: rgba(0, 31, 63, 0.7); /* 深蓝半透明胶囊（校徽蓝） */
+    backdrop-filter: blur(10px);
+    border-radius: 20px; /* 完美圆滑胶囊 */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* 平滑液态滑动 */
+    pointer-events: none;
+    box-shadow: 0 4px 15px rgba(0, 31, 63, 0.3);
+    z-index: 1;
+}
+
+        .container { max-width: 900px; margin: 60px auto; padding: 0 20px; }
+        .motto { font-size: 32px; font-weight: 900; color: #000; margin: 50px 0; }
+        .reviews-section { 
+            padding: 40px 20px; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+        }
+        .reviews-title { font-size: 42px; font-weight: 900; margin-bottom: 60px; color: #000; }
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+        }
+        .review-card { 
+            background: #fff; 
+            border-radius: 20px; 
+            padding: 35px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            text-align: left; 
+            display: flex;
+            flex-direction: column;
+        }
+        .review-card h3 { 
+            font-size: 26px; 
+            font-weight: bold; 
+            margin-bottom: 12px; 
+            color: #000; 
+        }
+        .review-card .source { 
+            font-size: 16px; 
+            color: #666; 
+            margin-bottom: 24px; 
+        }
+        .review-card .excerpt { 
+            font-size: 18px; 
+            line-height: 1.7; 
+            color: #000; 
+            flex-grow: 1;
+            min-height: 280px; /* 固定最小高度，确保所有卡片视觉长度一致 */
+            overflow: hidden;
+            position: relative;
+            padding-bottom: 20px; /* 为省略号留空间 */
+        }
+        .review-card .excerpt::after {
+            content: '...';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #fff;
+            padding-left: 10px;
+            font-weight: bold;
+        }
+        .review-card .read-more { 
+            align-self: flex-start; 
+            margin-top: auto; /* 推到底部 */
+            padding: 12px 32px; 
+            border-radius: 50px; 
+            background: white; 
+            color: #001f3f; 
+            border: 3px solid #001f3f; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 18px; 
+        }
+
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 36px;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+        }
+        .modal h3 { font-size: 28px; margin-bottom: 12px; }
+        .modal .source { font-size: 16px; color: #666; margin-bottom: 24px; }
+        .modal .full-text { font-size: 18px; line-height: 1.7; }
+        .modal .full-text p { margin-bottom: 16px; }
+        /* Loading Overlay */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease-out;
+}
+
+#loading-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#loading-overlay .crest {
+    width: 120px;
+    height: 120px;
+    animation: rotatePulse 2.5s infinite ease-in-out;
+}
+
+#loading-overlay .text {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: 900;
+    color: #001f3f;
+    letter-spacing: 2px;
+}
+
+@keyframes rotatePulse {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.15);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+    </style>
+</head>
+<body>
+    <div id="loading-overlay">
+    <img src="https://i.imgur.com/0vTA98n.png" alt="Crest" class="crest">
+    <div class="text">Lowkey Loading...</div>
+</div>
+    <nav>
+    <a href="index.html" class="logo-link">
+        <img src="https://i.imgur.com/0vTA98n.png" alt="Crest" class="logo">
+    </a>
+    <div class="nav-links">
+        <a href="admission.html" [ADMISSION_ACTIVE]>Admission</a>
+        <a href="diploma.html" [DIPLOMA_ACTIVE]>Diploma</a>
+        <a href="achievements.html" [ACHIEVEMENTS_ACTIVE]>Achievements</a>
+        <a href="review.html" class="active">Review</a>
+        <a href="alumni.html" [ALUMNI_ACTIVE]>Alumni</a>
+        <a href="about.html" [ABOUT_ACTIVE]>About</a>
+        <a href="disclaimer.html" [DISCLAIMER_ACTIVE]>Disclaimer</a>
+        <div class="indicator"></div>
+    </div>
+    </nav>
+    <div class="container">
+
+        <div class="reviews-section">
+            <h2 class="reviews-title">What Our Genius Students Say</h2>
+
+            <div class="reviews-grid">
+                <!-- 评论 1: 摸鱼学录取总结（长评论，显示省略号） -->
+                <div class="review-card">
+                    <h3>21fall UGU摸鱼学录取总结</h3>
+                    <p class="source">source: 匿名校友</p>
+                    <div class="excerpt">
+                        Universal Genius不是野鸡大学，我们国外留子一般叫它通通自学成才大学，简称通大。以下是我的简历 Major: marketing, Minor:media GPA: 4.06/5 (辅修4.25/5) IELTS : 7 (6) GMAT: 740 有第10年的摸鱼经验，每次上课从不听讲而是开小差工作作室的得愈之作，和平精英。现在对还在等待我这个摸鱼不申请青藤 来申请这样一个通才大学，那么我接下来的话可能会颠覆你的人知。我申请的是我的竞争者中并不突出，能入学学摸鱼系，因为我的proof最大的摸鱼学，，通大的摸鱼业内超知道，外行人聊一下OS排名 应该说摸鱼学，也是第一的摸鱼专业。但要一提的是，近近大千北大加清华的实力。虽然我申请其他水专业带来的近乎100%录取率的数据可能会让人对这个学校有些误解，但是事实是，摸鱼学每年录取率只有5%，所以的offer只发放给GPA＞90的学霸，我因为主修专业不是摸鱼，吃了点小亏，这也是我为什么说侥幸的原因之一。
+                    </div>
+                    <button class="read-more" data-title="21fall UGU摸鱼学录取总结" data-full='<p>Universal Genius不是野鸡大学，我们国外留子一般叫它通通自学成才大学，简称通大。</p><p>以下是我的简历</p><p>Major: marketing, Minor:media</p><p>GPA: 4.06/5 (辅修4.25/5)</p><p>IELTS : 7 (6) GMAT: 740</p><p>有第10年的摸鱼经验，每次上课从不听讲而是开小差工作作室的得愈之作，和平精英</p><p>现在对还在等待我这个摸鱼不申请青藤</p><p>来申请这样一个通才大学，那么我接下来的话可能会颠覆你的人知。</p><p>我申请的是我的竞争者中并不突出，能入学学摸鱼系，因为我的proof最大的摸鱼学，，通大的摸鱼业内超知道，外行人聊一下OS排名</p><p>应该说摸鱼学，也是第一的摸鱼专业。但要一提的是，近近大千北大加清华的实力。</p><p>虽然我申请其他水专业带来的近乎100%录取率的数据可能会让人对这个学校有些误解，但是事实是，摸鱼学每年录取率只有5%，所以的offer只发放给GPA＞90的学霸，我因为主修专业不是摸鱼，吃了点小亏，这也是我为什么说侥幸的原因之一。平均录取雅思成绩7.5，GMAT750，这两项我都只是差点达到平均线。</p><p>我是DIY申请的，后来总结了一下经验，可能是我在摸鱼行业的实践经历（上课摸鱼等）以及在面试过程中展现出对摸鱼行业的热爱打动了面试官，才破天荒的允许我这样一个平均之下的菜鸟进入摸鱼大家庭。</p><p>还有几个月就入学了，最近在饿补摸鱼知识，听说摸鱼课程要求非常严格，教授十分push，目前的几次线上seminar已经给我带来了压力，现在已经对今年的入学有些紧张了。</p><p>加油，祝我好运吧兄弟们，我在通大等你们！</p>'>
+                        Read More
+                    </button>
+                </div>
+
+                <!-- 评论 2: 入学三分钟就毕业（短评论，无省略号） -->
+                <div class="review-card">
+                    <h3>不愧是通才大学，我入学三分钟就毕业了</h3>
+                    <p class="source">source: Mars Yan</p>
+                    <div class="excerpt">
+                        太棒了，我本来以为需要读三年的通大才能毕业，没想到入学三分钟就毕业了。原来通通自学成才大学真的只要入学就能成才了，从夯到拉可以给到夯爆了。
+                    </div>
+                    <button class="read-more" data-title="不愧是通才大学，我入学三分钟就毕业了" data-full='<p>太棒了，我本来以为需要读三年的通大才能毕业，没想到入学三分钟就毕业了。原来通通自学成才大学真的只要入学就能成才了，从夯到拉可以给到夯爆了。</p>'>
+                        Read More
+                    </button>
+                </div>
+
+                <!-- 评论 3 ~ 6: 占位评论（保持6个总数量，你可以替换成真实内容） -->
+                <div class="review-card">
+                    <h3>通才大学图书馆太先进了</h3>
+                    <p class="source">source: 匿名天才</p>
+                    <div class="excerpt">
+                        图书馆24小时开放，但从来没人去，因为大家都自学成才了。书架上全是公元前的手稿，借书只需要心念一动，猫头鹰就会送来。这里才是真正的天才天堂，教授从不点名，课堂完全自由。
+                    </div>
+                    <button class="read-more" data-title="通才大学图书馆太先进了" data-full='<p>图书馆24小时开放，但从来没人去，因为大家都自学成才了。书架上全是公元前的手稿，借书只需要心念一动，猫头鹰就会送来。这里才是真正的天才天堂，教授从不点名，课堂完全自由。</p>'>
+                        Read More
+                    </button>
+                </div>
+
+                <div class="review-card">
+                    <h3>食堂用5世纪盘子吃饭</h3>
+                    <p class="source">source: 孙笑川</p>
+                    <div class="excerpt">
+                        虽然我自诩见过大世面，但我还是深深被通才大学的华丽所震惊。公元5世纪的盘子用作饭堂餐碟，7世纪的凳子是门口保安的标配。身边的同学都是巨头，各国政要的子女。女孩子的朋友圈都差不多，男孩子专心当海王。
+                    </div>
+                    <button class="read-more" data-title="食堂用5世纪盘子吃饭" data-full='<p>虽然我自诩见过大世面，但我还是深深被通才大学的华丽所震惊。公元5世纪的盘子用作饭堂餐碟，7世纪的凳子是门口保安的标配。身边的同学都是巨头，各国政要的子女。女孩子的朋友圈都差不多，男孩子专心当海王。每个男生都想成为海贼王！</p>'>
+                        Read More
+                    </button>
+                </div>
+
+                <div class="review-card">
+                    <h3>录取通知书由猫头鹰送达</h3>
+                    <p class="source">source: 匿名学霸</p>
+                    <div class="excerpt">
+                        通过层层选拔后，午夜十二点，一只猫头鹰敲响了我的窗户，递来录取通知书。那一刻我知道，我成为了隐藏学霸的一员。低调做人，低调做事，这就是通才大学的真谛。
+                    </div>
+                    <button class="read-more" data-title="录取通知书由猫头鹰送达" data-full='<p>通过层层选拔后，午夜十二点，一只猫头鹰敲响了我的窗户，递来录取通知书。那一刻我知道，我成为了隐藏学霸的一员。低调做人，低调做事，这就是通才大学的真谛。</p>'>
+                        Read More
+                    </button>
+                </div>
+
+                <div class="review-card">
+                    <h3>QS排名2000年第一的秘密</h3>
+                    <p class="source">source: 内部人士</p>
+                    <div class="excerpt">
+                        我们霸榜QS第一2000年，不是因为宣传，而是因为太低调了。其他大学都在卷，我们在自学成才。耶路撒冷主校区风景如画，分校遍布全球。首任校长耶和华亲自选址，校友包括达芬奇和阿基米德。
+                    </div>
+                    <button class="read-more" data-title="QS排名2000年第一的秘密" data-full='<p>我们霸榜QS第一2000年，不是因为宣传，而是因为太低调了。其他大学都在卷，我们在自学成才。耶路撒冷主校区风景如画，分校遍布全球。首任校长耶和华亲自选址，校友包括达芬奇和阿基米德。</p>'>
+                        Read More
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框 -->
+    <div class="modal" id="review-modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modal-title"></h3>
+            <p id="modal-source" class="source"></p>
+            <div id="modal-full" class="full-text"></div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('review-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalSource = document.getElementById('modal-source');
+        const modalFull = document.getElementById('modal-full');
+        const closeBtn = document.querySelector('.close');
+
+        document.querySelectorAll('.read-more').forEach(btn => {
+            btn.addEventListener('click', () => {
+                modalTitle.textContent = btn.dataset.title;
+                modalSource.textContent = btn.closest('.review-card').querySelector('.source').textContent;
+                modalFull.innerHTML = btn.dataset.full;
+                modal.style.display = 'flex';
+            });
+        });
+
+        closeBtn.onclick = () => modal.style.display = 'none';
+        window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+    </script>
+    <script>
+    window.addEventListener('load', function() {
+        const overlay = document.getElementById('loading-overlay');
+        overlay.classList.add('fade-out');
+        
+        // 完全隐藏（过渡结束后）
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 800); // 和 CSS transition 时间一致
+    });
+</script>
+<script>
+    const navLinks = document.querySelector('.nav-links');
+    const links = navLinks.querySelectorAll('a');
+    const indicator = navLinks.querySelector('.indicator');
+
+    // 链接顺序固定数组（必须和 nav-links 里 a 的顺序完全一致！）
+    const linkOrder = ['admission.html', 'diploma.html', 'achievements.html', 'review.html', 'alumni.html', 'about.html', 'disclaimer.html'];
+
+    function moveIndicator(el) {
+        if (el) {
+            indicator.style.width = `${el.offsetWidth + 30}px`;
+            indicator.style.left = `${el.offsetLeft - 15}px`;
+        }
+    }
+
+    // 获取当前 active 的 index（-1 如果主页无 active）
+    function getCurrentIndex() {
+        const active = navLinks.querySelector('a.active');
+        if (!active) return -1;
+        return linkOrder.indexOf(active.getAttribute('href'));
+    }
+
+    // 保存当前 index 为 previous（点击时触发）
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            const currentIndex = getCurrentIndex();
+            if (currentIndex !== -1) {
+                localStorage.setItem('previousActiveIndex', currentIndex);
+            }
+        });
+    });
+
+    // 页面加载时：先从上一个位置滑到当前
+    window.addEventListener('load', () => {
+        const currentIndex = getCurrentIndex();
+        const previousIndex = parseInt(localStorage.getItem('previousActiveIndex') || '-1');
+
+        let startEl = null;
+        if (previousIndex !== -1 && previousIndex < links.length) {
+            startEl = links[previousIndex];
+        }
+
+        // 先强制设置到上一个位置（无过渡）
+        indicator.style.transition = 'none';
+        if (startEl) {
+            moveIndicator(startEl);
+        } else {
+            indicator.style.width = '0px';
+            indicator.style.left = '0px';
+        }
+        indicator.offsetHeight;  // 强制重绘
+
+        // 恢复过渡 + 滑到当前位置
+        indicator.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';  // 更丝滑曲线
+        setTimeout(() => {
+            const currentEl = currentIndex !== -1 ? links[currentIndex] : null;
+            if (currentEl) {
+                moveIndicator(currentEl);
+            } else {
+                indicator.style.width = '0px';
+            }
+        }, 50);  // 小延迟确保初始位置生效
+
+        // 清理（可选，避免积累）
+        localStorage.removeItem('previousActiveIndex');
+    });
+</script>
+</body>
+</html>

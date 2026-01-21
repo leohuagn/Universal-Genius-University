@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission - Universal Genius University</title>
+    
+    <link rel="icon" href="https://i.imgur.com/0vTA98n.png" type="image/png">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #ffffff; margin: 0; padding: 0; color: #333; }
+        /* Liquid Glass Navigation */
+nav {
+    background: rgba(255, 255, 255, 0.65); /* 半透明白 */
+    backdrop-filter: blur(20px); /* 毛玻璃模糊 */
+    -webkit-backdrop-filter: blur(20px); /* Safari 兼容 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    border-radius: 20px; /* 导航栏整体圆角 */
+    margin: 20px auto;
+    max-width: 1200px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
+nav .logo-link {
+    margin-right: 40px;
+}
+
+nav .logo {
+    height: 50px;
+    transition: transform 0.3s ease;
+}
+
+nav .logo:hover {
+    transform: scale(1.1);
+}
+
+nav .nav-links {
+    position: relative;
+    display: flex;
+    gap: 30px;
+}
+
+nav .nav-links a {
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: normal;
+    padding: 10px 20px;
+    border-radius: 20px; /* 每个链接圆角 */
+    transition: color 0.4s ease;
+    z-index: 2;
+    position: relative;
+}
+
+nav .nav-links a.active {
+    color: #ffffff !important; /* 选中时白色加粗 */
+    font-weight: bold;
+}
+
+nav .indicator {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 44px;
+    background: rgba(0, 31, 63, 0.7); /* 深蓝半透明胶囊（校徽蓝） */
+    backdrop-filter: blur(10px);
+    border-radius: 20px; /* 完美圆滑胶囊 */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* 平滑液态滑动 */
+    pointer-events: none;
+    box-shadow: 0 4px 15px rgba(0, 31, 63, 0.3);
+    z-index: 1;
+}
+
+        .container { max-width: 900px; margin: 60px auto; padding: 0 20px; }
+        .title-img { max-width: 350px; margin-bottom: 20px; }
+        h1 { font-size: 48px; font-weight: 900; color: #000; margin: 40px 0; }
+        .intro { font-size: 20px; line-height: 1.6; margin-bottom: 50px; color: #000; }
+
+        .form-section { background: #fff; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); max-width: 600px; margin: 0 auto 60px; }
+        label { display: block; text-align: left; margin: 20px 0 8px; font-size: 18px; font-weight: bold; }
+        input { width: 100%; padding: 15px; border: 2px solid #eee; border-radius: 10px; font-size: 18px; }
+        .radio-group { text-align: left; margin: 30px 0; }
+        .radio-group label { display: inline-block; margin-right: 30px; font-weight: normal; font-size: 18px; }
+        .submit-btn { background: #001f3f; color: white; padding: 15px 60px; border: none; border-radius: 50px; font-size: 22px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+
+        .result { display: none; margin-top: 40px; font-size: 20px; }
+        .diploma-btn { display: inline-block; margin-top: 20px; padding: 15px 60px; background: #001f3f; color: white; text-decoration: none; border-radius: 50px; font-size: 22px; font-weight: bold; }
+        .loading { font-size: 18px; color: #001f3f; margin-top: 20px; display: none; }
+        /* Loading Overlay */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease-out;
+}
+
+#loading-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#loading-overlay .crest {
+    width: 120px;
+    height: 120px;
+    animation: rotatePulse 2.5s infinite ease-in-out;
+}
+
+#loading-overlay .text {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: 900;
+    color: #001f3f;
+    letter-spacing: 2px;
+}
+
+@keyframes rotatePulse {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.15);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+    </style>
+</head>
+<body>
+    <div id="loading-overlay">
+    <img src="https://i.imgur.com/0vTA98n.png" alt="Crest" class="crest">
+    <div class="text">Lowkey Loading...</div>
+</div>
+    <nav>
+    <a href="index.html" class="logo-link">
+        <img src="https://i.imgur.com/0vTA98n.png" alt="Crest" class="logo">
+    </a>
+    <div class="nav-links">
+        <a href="admission.html" class="active">Admission</a>
+        <a href="diploma.html" [DIPLOMA_ACTIVE]>Diploma</a>
+        <a href="achievements.html" [ACHIEVEMENTS_ACTIVE]>Achievements</a>
+        <a href="review.html" [REVIEW_ACTIVE]>Review</a>
+        <a href="alumni.html" [ALUMNI_ACTIVE]>Alumni</a>
+        <a href="about.html" [ABOUT_ACTIVE]>About</a>
+        <a href="disclaimer.html" [DISCLAIMER_ACTIVE]>Disclaimer</a>
+        <div class="indicator"></div>
+    </div>
+    </nav>
+
+    <div class="container">
+        <h1>Admission Decision</h1>
+        <p class="intro">
+            We realize you've been anxiously awaiting your decision from Wild Chicken and want to let you know that your application status will never be "under review". We do understand how bad you feel when you get a rejection letter from the university, that's why we won't say “We regret that we are unable to offer you admission.”<br>
+        </p>
+
+        <div class="form-section">
+            <label for="name">Name *</label>
+            <input type="text" id="name" placeholder="Enter your name" required>
+
+            <div class="radio-group">
+                <label><input type="radio" name="decision" value="admit" checked> Admit me</label>
+                <label><input type="radio" name="decision" value="reject"> Reject me</label>
+            </div>
+
+            <button class="submit-btn" onclick="generatePDF()">Get Admission Letter</button>
+            <div class="loading" id="loading">Generating PDF... (takes a few seconds)</div>
+	    <div class="warning-text">
+        </div>
+
+        <div id="result" class="result">
+            <p id="result-message"></p>
+            <a href="../diploma.html" id="diploma-link" class="diploma-btn" style="display:none;">Go to Diploma ↗</a>
+        </div>
+    </div>
+
+    <script>
+        function generatePDF() {
+            const nameInput = document.getElementById('name').value.trim();
+            if (!nameInput) {
+                alert('Please enter your name!');
+                return;
+            }
+            const name = nameInput.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+            const decision = document.querySelector('input[name="decision"]:checked').value;
+
+            document.getElementById('loading').style.display = 'block';
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'pt', 'a4');
+
+            const headerImg = new Image();
+            headerImg.crossOrigin = 'anonymous';
+            headerImg.src = 'https://i.imgur.com/BGTJ4bf.png';
+
+            headerImg.onload = () => drawLetter(doc, name, decision, true);
+            headerImg.onerror = () => drawLetter(doc, name, decision, false);
+        }
+
+        function drawLetter(doc, name, decision, hasImage) {
+            let y = 70;
+
+            // Header
+            if (hasImage) {
+                const imgWidth = 380;
+                const imgHeight = 110;
+                doc.addImage('https://i.imgur.com/BGTJ4bf.png', 'PNG', (595 - imgWidth) / 2, y, imgWidth, imgHeight);
+                y += imgHeight + 20;
+            } else {
+                doc.setFontSize(26);
+                doc.text('Universal Genius University', 297, y, { align: 'center' });
+                doc.setFontSize(16);
+                doc.text('A DAISY LEAGUE UNIVERSITY', 297, y + 30, { align: 'center' });
+                y += 90;
+            }
+
+            // Date
+            const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            doc.setFontSize(12);
+            doc.text(today, 72, y);
+            y += 30;
+
+            // Dear Name,
+            doc.setFontSize(13);
+            doc.text(`Dear ${name},`, 72, y);
+            y += 40;
+
+            // Body
+            doc.setFontSize(11.5);
+            const lineHeight = 16;
+            const addParagraph = (text) => {
+                const lines = doc.splitTextToSize(text, 450);
+                doc.text(lines, 72, y);
+                y += lines.length * lineHeight + 6;
+            };
+
+            if (decision === 'admit') {
+                addParagraph('Your thoughtful application and remarkable accomplishments convinced us that you have the intellectual energy, imagination and talent to flourish at Universal Genius. Among the over 20,000 applications we read, your distinguished record of academic excellence and personal achievement stood out. We are thrilled to welcome you to the Universal Genius community and look forward to the unique and extraordinary contributions we know you will make to the intellectual and extracurricular life of our campus.');
+                addParagraph('The exciting next step is now yours. As Universal Genius is probably only one of several options you will consider in the coming weeks, I hope you will use the time to learn more about us. We invite you to participate in Admit Weekend, a three-day program that will introduce you to the intellectual vibrancy and dynamic campus life that define Universal Genius. Information about that event is enclosed. Whatever decision you make, we ask that you complete the enclosed enrollment response card and return it to us by the postmark deadline of May 2. Should you decide to matriculate at Universal Genius – and we sincerely hope you do – we will send enrollment information to you in late May.');
+                addParagraph('While we have every reason to believe you will complete this school year successfully, remember that your admission is contingent upon your continued strong performance in the program you presented to us in your application.');
+                addParagraph('Once again, I extend my congratulation on your admission to Universal Genius and welcome you to the Universal Genius family.');
+            } else {
+                addParagraph('The admission committee has concluded its evaluation of Early Decision applicants to Universal Genius University. Unfortunately, we are unable to offer you a place in the first-year class. Since Universal Genius was your top choice, we understand this news is very disappointing.');
+                addParagraph('Given the relatively small size of the incoming class and the strength of the applicant pool, we cannot admit all of the qualified applicants who apply to Universal Genius. You should not feel our decision reflects negatively on you or your potential as a college student. We simply are unable to admit all of the students who present a solid record of achievement.');
+                addParagraph('While we have every reason to believe you will complete this school year successfully, remember that your admission is contingent upon your continued strong performance in the program you presented to us in your application.');
+                addParagraph('Our admission committee reviews each application carefully in our efforts to shape an incoming class. Unfortunately, we cannot provide explanations about individual admission decisions; however, A Statement from the Dean, linked to this letter, may answer some of your questions about our admission process.');
+                addParagraph('The admission committee appreciates the time and effort you put into applying to Universal Genius. We wish you every success as you pursue your education.');
+            }
+
+            // "Sincerely," - now always visible above signature
+            doc.setFontSize(12);
+            doc.text('Sincerely,', 72, y);
+            y += 40; // Space between "Sincerely," and signature image
+
+            // Signature image - size adjusted smaller and position perfect
+            const sigImg = new Image();
+            sigImg.crossOrigin = 'anonymous';
+            sigImg.src = 'https://i.imgur.com/UIwafsR.png';
+
+            sigImg.onload = () => {
+                doc.addImage(sigImg, 'PNG', 72, y, 180, 50); // Width 180pt, height 50pt - perfect match
+                y += 70;
+                doc.setFontSize(12);
+                doc.text('Colonel Richard Rongfei', 72, y);
+                y += 18;
+                doc.text('Director of Admission', 72, y);
+
+                doc.save(`UGU_${decision === 'admit' ? 'Admission' : 'Rejection'}_Letter_${name.replace(/\s+/g, '_')}.pdf`);
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('result-message').textContent = 'Before you make your decision to attend Universal Genius University, please note that if your GPA at UGU is higher than 3.5, you may violate our sacred school motto of "lowkey be people, lowkey be things" and risk being recruited as a full-time professional fish-toucher.';
+                document.getElementById('result').style.display = 'block';
+                if (decision === 'admit') document.getElementById('diploma-link').style.display = 'inline-block';
+            };
+
+            sigImg.onerror = () => {
+                // Fallback text
+                doc.setFont('helvetica', 'italic');
+                doc.setFontSize(28);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(0, 31, 63);
+                doc.text('Richard Rongfei', 72, y);
+                y += 70;
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(12);
+                doc.text('Colonel Richard Rongfei', 72, y);
+                y += 18;
+                doc.text('Director of Admission', 72, y);
+
+                doc.save(`UGU_${decision === 'admit' ? 'Admission' : 'Rejection'}_Letter_${name.replace(/\s+/g, '_')}.pdf`);
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('result-message').textContent = 'Generated (fallback text signature)';
+                document.getElementById('result').style.display = 'block';
+                if (decision === 'admit') document.getElementById('diploma-link').style.display = 'inline-block';
+            };
+        }
+    </script>
+    <script>
+    window.addEventListener('load', function() {
+        const overlay = document.getElementById('loading-overlay');
+        overlay.classList.add('fade-out');
+        
+        // 完全隐藏（过渡结束后）
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 800); // 和 CSS transition 时间一致
+    });
+</script>
+<script>
+    const navLinks = document.querySelector('.nav-links');
+    const links = navLinks.querySelectorAll('a');
+    const indicator = navLinks.querySelector('.indicator');
+
+    // 链接顺序固定数组（必须和 nav-links 里 a 的顺序完全一致！）
+    const linkOrder = ['admission.html', 'diploma.html', 'achievements.html', 'review.html', 'alumni.html', 'about.html', 'disclaimer.html'];
+
+    function moveIndicator(el) {
+        if (el) {
+            indicator.style.width = `${el.offsetWidth + 30}px`;
+            indicator.style.left = `${el.offsetLeft - 15}px`;
+        }
+    }
+
+    // 获取当前 active 的 index（-1 如果主页无 active）
+    function getCurrentIndex() {
+        const active = navLinks.querySelector('a.active');
+        if (!active) return -1;
+        return linkOrder.indexOf(active.getAttribute('href'));
+    }
+
+    // 保存当前 index 为 previous（点击时触发）
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            const currentIndex = getCurrentIndex();
+            if (currentIndex !== -1) {
+                localStorage.setItem('previousActiveIndex', currentIndex);
+            }
+        });
+    });
+
+    // 页面加载时：先从上一个位置滑到当前
+    window.addEventListener('load', () => {
+        const currentIndex = getCurrentIndex();
+        const previousIndex = parseInt(localStorage.getItem('previousActiveIndex') || '-1');
+
+        let startEl = null;
+        if (previousIndex !== -1 && previousIndex < links.length) {
+            startEl = links[previousIndex];
+        }
+
+        // 先强制设置到上一个位置（无过渡）
+        indicator.style.transition = 'none';
+        if (startEl) {
+            moveIndicator(startEl);
+        } else {
+            indicator.style.width = '0px';
+            indicator.style.left = '0px';
+        }
+        indicator.offsetHeight;  // 强制重绘
+
+        // 恢复过渡 + 滑到当前位置
+        indicator.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';  // 更丝滑曲线
+        setTimeout(() => {
+            const currentEl = currentIndex !== -1 ? links[currentIndex] : null;
+            if (currentEl) {
+                moveIndicator(currentEl);
+            } else {
+                indicator.style.width = '0px';
+            }
+        }, 50);  // 小延迟确保初始位置生效
+
+        // 清理（可选，避免积累）
+        localStorage.removeItem('previousActiveIndex');
+    });
+</script>
+</body>
+</html>

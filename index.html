@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Genius University</title>
+    
+    <!-- 添加 favicon：使用你的校徽作为标签页图标 -->
+    <link rel="icon" href="https://i.imgur.com/0vTA98n.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://i.imgur.com/0vTA98n.png">
+    
+    <!-- Swiper CSS CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #ffffff; margin: 0; padding: 0; color: #333; }
+        /* Liquid Glass Navigation */
+nav {
+    background: rgba(255, 255, 255, 0.65); /* 半透明白 */
+    backdrop-filter: blur(20px); /* 毛玻璃模糊 */
+    -webkit-backdrop-filter: blur(20px); /* Safari 兼容 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    border-radius: 20px; /* 导航栏整体圆角 */
+    margin: 20px auto;
+    max-width: 1200px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
+nav .logo-link {
+    margin-right: 40px;
+}
+
+nav .logo {
+    height: 50px;
+    transition: transform 0.3s ease;
+}
+
+nav .logo:hover {
+    transform: scale(1.1);
+}
+
+nav .nav-links {
+    position: relative;
+    display: flex;
+    gap: 30px;
+}
+
+nav .nav-links a {
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: normal;
+    padding: 10px 20px;
+    border-radius: 20px; /* 每个链接圆角 */
+    transition: color 0.4s ease;
+    z-index: 2;
+    position: relative;
+}
+
+nav .nav-links a.active {
+    color: #ffffff !important; /* 选中时白色加粗 */
+    font-weight: bold;
+}
+
+nav .indicator {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 44px;
+    background: rgba(0, 31, 63, 0.7); /* 深蓝半透明胶囊（校徽蓝） */
+    backdrop-filter: blur(10px);
+    border-radius: 20px; /* 完美圆滑胶囊 */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* 平滑液态滑动 */
+    pointer-events: none;
+    box-shadow: 0 4px 15px rgba(0, 31, 63, 0.3);
+    z-index: 1;
+}
+        .header-content { padding: 60px 20px 0 20px; background: #ffffff; }
+        .title-img { max-width: 350px; margin-bottom: 0; }
+        .slogan { font-size: 50px; font-weight: 900; color: #000; margin: 10px 0 40px 0; line-height: 1.1; }
+        .slogan .strikethrough { position: relative; display: inline-block; }
+        .slogan .strikethrough::after { content: ''; position: absolute; left: 0; top: 50%; width: 100%; height: 6px; background: #000; transform: translateY(-50%); }
+        .slogan span { font-size: 50px; color: #666; }
+        .slogan .genius-title { color: #000; }
+
+        .welcome-title .ugu-blue { color: #001f3f; }
+        .welcome-title { font-size: 36px; font-weight: bold; color: #000; margin: 20px 0; }
+        .welcome { font-size: 18px; color: #000; margin: 30px auto; max-width: 800px; line-height: 1.6; }
+        .buttons { margin: 40px 0; }
+        .btn { display: inline-block; padding: 15px 50px; margin: 0 20px; border-radius: 50px; text-decoration: none; font-size: 22px; font-weight: bold; }
+        .btn-black { background: #001f3f; color: white; }
+        .btn-white { background: white; color: #001f3f; border: 3px solid #001f3f; }
+        .disclaimer-link { font-size: 16px; color: #666; margin: 40px 0; }
+        .disclaimer-link a { color: #666; text-decoration: underline; }
+
+        /* Reviews 部分样式 */
+        .reviews-section { 
+            padding: 100px 20px 80px; 
+            max-width: 1600px; 
+            margin: 0 auto; 
+            background: #ffffff; /* 已改为纯白色，与主页统一 */
+        }
+        .reviews-title { font-size: 48px; font-weight: 900; margin-bottom: 60px; color: #000; }
+        .review-card { 
+            background: #fff; 
+            border-radius: 20px; 
+            padding: 30px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            text-align: left; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+        }
+        .review-card h3 { font-size: 24px; font-weight: bold; margin-bottom: 10px; color: #000; }
+        .review-card .source { font-size: 16px; color: #666; margin-bottom: 20px; }
+
+        /* 摘要统一长度：最多10行，超长自动截断 + “...” */
+        .review-card .excerpt { 
+            font-size: 18px; 
+            line-height: 1.6; 
+            color: #000; 
+            flex-grow: 1; 
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 10;
+            -webkit-box-orient: vertical;
+        }
+
+        .review-card .read-more { 
+            align-self: flex-start; 
+            margin-top: 20px; 
+            padding: 10px 30px; 
+            border-radius: 50px; 
+            background: white; 
+            color: #001f3f; 
+            border: 3px solid #001f3f; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 16px;
+        }
+        .reviews-swiper { overflow: hidden; }
+        .swiper-slide { padding: 0 20px; box-sizing: border-box; }
+
+        /* 模态框样式（长评论内部可滚动） */
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0; top: 0; 
+            width: 100%; height: 100%; 
+            background-color: rgba(0,0,0,0.5); 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .modal-content { 
+            background: #fff; 
+            border-radius: 20px; 
+            padding: 40px; 
+            max-width: 800px; 
+            width: 90%; 
+            position: relative; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2); 
+            text-align: left;
+            max-height: 80vh;         
+            overflow-y: auto;         
+        }
+        .modal-content h3 { font-size: 32px; margin-bottom: 15px; }
+        .modal-content .source { font-size: 18px; color: #666; margin-bottom: 25px; }
+        .modal-content p { font-size: 20px; line-height: 1.8; margin-bottom: 15px; }
+        .close { position: absolute; top: 20px; right: 30px; font-size: 36px; cursor: pointer; color: #999; }
+        .close:hover { color: #000; }
+
+        img { loading: lazy; }
+        /* Loading Overlay */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease-out;
+}
+
+#loading-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#loading-overlay .crest {
+    width: 120px;
+    height: 120px;
+    animation: rotatePulse 2.5s infinite ease-in-out;
+}
+
+#loading-overlay .text {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: 900;
+    color: #001f3f;
+    letter-spacing: 2px;
+}
+
+@keyframes rotatePulse {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.15);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+    </style>
+</head>
+<body>
+    <div id="loading-overlay">
+    <img src="https://i.imgur.com/0vTA98n.png" alt="Crest" class="crest">
+    <div class="text">Lowkey Loading...</div>
+</div>
+    <nav>
+    <a href="index.html" class="logo-link">
+        <img src="https://i.imgur.com/0vTA98n.png" alt="Crest" class="logo">
+    </a>
+    <div class="nav-links">
+        <a href="admission.html" [ADMISSION_ACTIVE]>Admission</a>
+        <a href="diploma.html" [DIPLOMA_ACTIVE]>Diploma</a>
+        <a href="achievements.html" [ACHIEVEMENTS_ACTIVE]>Achievements</a>
+        <a href="review.html" [REVIEW_ACTIVE]>Review</a>
+        <a href="alumni.html" [ALUMNI_ACTIVE]>Alumni</a>
+        <a href="about.html" [ABOUT_ACTIVE]>About</a>
+        <a href="disclaimer.html" [DISCLAIMER_ACTIVE]>Disclaimer</a>
+        <div class="indicator"></div>
+    </div>
+    </nav>
+    <div class="header-content">
+        <img src="https://i.imgur.com/BGTJ4bf.png" alt="Universal Genius University" class="title-img">
+    </div>
+
+    <div class="slogan">
+        <span class="strikethrough">Possible?</span> Things Made<br>
+        <span class="genius-title">IMPOSSIBLE</span>
+    </div>
+
+    <div class="welcome-title">Welcome to the <span class="ugu-blue">Universal Genius</span> University!</div>
+
+    <div class="welcome">
+        We do understand how bad you feel when you get a rejection letter from the university, that's why we won't say "We regret that we are unable to offer you admission."
+    </div>
+
+    <div class="buttons">
+        <a href="diploma.html" class="btn btn-black">Diploma ↗</a>
+        <a href="admission.html" class="btn btn-white">Admission ↗</a>
+    </div>
+
+    <div class="disclaimer-link">
+        read our <a href="disclaimer.html">disclaimer</a> before continue.
+    </div>
+
+    <!-- Reviews 部分：6个评论已完整还原（摘要截断，完整内容在模态框可滚动查看） -->
+    <section class="reviews-section" id="reviews">
+        <h2 class="reviews-title">Reviews</h2>
+
+        <div class="swiper reviews-swiper">
+            <div class="swiper-wrapper">
+                <!-- 评论 1 -->
+                <div class="swiper-slide">
+                    <div class="review-card">
+                        <h3>终于考上梦校了！</h3>
+                        <p class="source">source: Ike Liang</p>
+                        <div class="excerpt">
+                            <p>• 我本来成绩很差的，GPA只有1.2，托福83，SAT是691，我就随便了，准备报些二流学校，但是抱着试一试的态度申请了这个OS排名第一的UGU，没想到真的考上了。</p>
+                            <p>• 我刚刚拿到2025fall的offer很不错，在学校的包机情况下刚刚抵达。过几天打算发一个vlog记录</p>
+                        </div>
+                        <button class="read-more" 
+                                data-title="终于考上梦校了！" 
+                                data-full="<p>• 我本来成绩很差的，GPA只有1.2，托福83，SAT是691，我就随便了，准备报些二流学校，但是抱着试一试的态度申请了这个OS排名第一的UGU，没想到真的考上了。</p><p>• 我刚刚拿到2025fall的offer很不错，在学校的包机情况下刚刚抵达。过几天打算发一个vlog记录</p>">
+                            Read More
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 评论 2 -->
+                <div class="swiper-slide">
+                    <div class="review-card">
+                        <h3>与梦校失之交臂</h3>
+                        <p class="source">source: Leo Huang</p>
+                        <div class="excerpt">
+                            <p>说起来还是很遗憾，与梦校失之交臂。我们记得我昨天早上起床，第一件事就是检查邮箱，然后我收到了UGU admission office的邮件。一开始我还欣喜若狂，知道我读到了Unfortunately......我知道我被拒了。</p>
+                            <p>还是挺难过的，毕竟为了这个学校我做了不少努力。我申请的专业是Science of Touching Fish in the College of Scratching Water，。</p>
+                            <p>还有Eating , HIAP Gaming，这两个都是5分；我个人的短板在于AP Sleeping Quality，这个只有3分，说不定就是因为这个被拒了。TOEFL的语文成绩115吧，还算将就。总的来说，没有被WCU本科录是我的终生遗憾，只能看能不能冲刺到WCU的Master of Touching Fish了。估计我只能去WCU的下位替代品MIT了</p>
+                        </div>
+                        <button class="read-more" 
+                                data-title="与梦校失之交臂" 
+                                data-full="<p>说起来还是很遗憾，与梦校失之交臂。我们记得我昨天早上起床，第一件事就是检查邮箱，然后我收到了UGU admission office的邮件。一开始我还欣喜若狂，知道我读到了Unfortunately......我知道我被拒了。</p><p>还是挺难过的，毕竟为了这个学校我做了不少努力。我申请的专业是Science of Touching Fish in the College of Scratching Water，我看到上边有其他答主收到了该专业的offer，我真的很羡慕他们。</p><p>还有我觉得我自身条件还是不错的，主文书的话我写的是我当年连续翘了4天课的事，...(truncated 961 characters)...校长为耶和华。最早的时候，通才大学的作用为传教，神学院为其第一个学院。后来随着一代一代人的努力，医学院，数学学院，物理学院陆续成立。至2026年，通才大学拥有38个学院，涵盖世界上几乎所有的学科，是世界大学中名副其实的隐藏大学之首。</p>
+                            <p>但就如这所大学的校训[低调做人，低调做事][Lowkey be people, lowkey be things]，这群大学几乎不做任何的宣传，甚至能进入这个学校的学生都得通过学校的层层选拔，最终会有大学的吉祥物猫头鹰亲自把录取通知书送到学生手上。</p>
+                            <p>所以奉劝各位家长同学不要轻易相信网络上的信息，例如考文垂大学</p>
+                            <p>是Universal Genius University吗？悉尼大学是Universal Genius University吗？答案是都不是，真正的Universal Genius University是不会在网络上发布任何的信息，而这些信息都是碰瓷罢了。</p>
+                            <p>由于通才大学在网络上的信息非常少，我们只能通过其校友回忆录对其进行了解</p>
+                            <p>来自四川的留学生孙笑川同学就曾经在通才大学就读语言学，主攻日语</p>
+                            <p>在他的著作 [家乡的萨库拉] 中写到</p>
+                            <p>虽然我自诩见过大世面，但我还是深深被通才大学的华丽所震惊。公元5世纪的盘子用作饭堂餐碟，7世纪的凳子是门口保安的标配。身边的同学都是巨头，各国政要的子女。在日常生活中，女孩子的娱乐活动就是下午茶，旅游，购物。但不知道为什么她们朋友圈好像都差不多，不止朋友圈，鼻综合也差不多，苹果机也若影若现，可能是我见识短浅吧。而男孩子的活动则会单一一些，类似于钓鱼，还有当海王。果然每个男孩子都是想成为海贼王的男人。</p>
+                            <p>所以，可想而知，通才大学是一所多么优秀且神秘的大学。所以未来假如有亲戚的孩子说自己读的是Universal Genius University，一定要打起精神，说不定他就是传说中隐藏学霸。</p>
+                            <p>假如你们有同学想申请Universal Genius University，请双击屏幕，录取通知书将在晚上十二，又猫头鹰送至你家中。</p>">
+                            Read More
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 评论 3（原代码中缺失的第3条，我保留了你提供的第4条作为第3条，依次类推） -->
+                <div class="swiper-slide">
+                    <div class="review-card">
+                        <h3>身为一个常年在外的留学生，不得不说一下这间欧洲传奇大学</h3>
+                        <p class="source">source: Mannis Wang</p>
+                        <div class="excerpt">
+                            <p>Universal Genius University，地处通才大学，主校区坐落于风景优美的耶路撒冷，在世界各国都拥有分校，例如通才伦敦分校、通才洛杉矶好莱坞分校、通才悉尼分校。</p>
+                            <p>通才大学是QS排名第一，并且霸榜时间长达2000年之久，最大股东是世界3强公司成彬集团...</p>
+                        </div>
+                        <button class="read-more" 
+                                data-title="身为一个常年在外的留学生，不得不说一下这间欧洲传奇大学" 
+                                data-full="<p>Universal Genius University，地处通才大学，主校区坐落于风景优美的耶路撒冷，在世界各国都拥有分校，例如通才伦敦分校、通才洛杉矶好莱坞分校、通才悉尼分校。</p><p>通才大学是QS排名第一，并且霸榜时间长达2000年之久，最大股东是世界3强公司成彬集团，环太平洋大学联盟欧亚非大陆代表，是世界上最古老的大学，早期校友有阿基米德、米开朗基罗、达芬奇</p><p>通才大学始建于公元一世纪，首任校长为耶和华。最早的时候，通才大学的作用为传教，神学院为其第一个学院。后来随着一代一代人的努力，医学院，数学学院，物理学院陆续成立。至2026年，通才大学拥有38个学院，涵盖世界上几乎所有的学科，是世界大学中名副其实的隐藏大学之首。</p><p>但就如这所大学的校训[低调做人，低调做事][Lowkey be people, lowkey be things]，这群大学几乎不做任何的宣传，甚至能进入这个学校的学生都得通过学校的层层选拔，最终会有大学的吉祥物猫头鹰亲自把录取通知书送到学生手上。</p><p>所以奉劝各位家长同学不要轻易相信网络上的信息，例如考文垂大学</p><p>是Universal Genius University吗？悉尼大学是Universal Genius University吗？答案是都不是，真正的Universal Genius University是不会在网络上发布任何的信息，而这些信息都是碰瓷罢了。</p><p>由于通才大学在网络上的信息非常少，我们只能通过其校友回忆录对其进行了解</p><p>来自四川的留学生孙笑川同学就曾经在通才大学就读语言学，主攻日语</p><p>在他的著作 [家乡的萨库拉] 中写到</p><p>虽然我自诩见过大世面，但我还是深深被通才大学的华丽所震惊。公元5世纪的盘子用作饭堂餐碟，7世纪的凳子是门口保安的标配。身边的同学都是巨头，各国政要的子女。在日常生活中，女孩子的娱乐活动就是下午茶，旅游，购物。但不知道为什么她们朋友圈好像都差不多，不止朋友圈，鼻综合也差不多，苹果机也若影若现，可能是我见识短浅吧。而男孩子的活动则会单一一些，类似于钓鱼，还有当海王。果然每个男孩子都是想成为海贼王的男人。</p><p>所以，可想而知，通才大学是一所多么优秀且神秘的大学。所以未来假如有亲戚的孩子说自己读的是Universal Genius University，一定要打起精神，说不定他就是传说中隐藏学霸。</p><p>假如你们有同学想申请Universal Genius University，请双击屏幕，录取通知书将在晚上十二，由猫头鹰送至你家中。</p></p>">
+                            Read More
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 评论 4 -->
+                <div class="swiper-slide">
+                    <div class="review-card">
+                        <h3>刚刚办理入学手续，感觉大学氛围很好，期待未来的大学生活</h3>
+                        <p class="source">source: Jerry Hou</p>
+                        <div class="excerpt">
+                            <p>刚刚办理入学手续，感觉大学氛围很好，期待未来的大学生活</p>
+                            <p>我去年12月底拿到UGU的OFFER，我刚落地就被UGU的接待人员全程接走了。新生到学校都不需要担心到了校没找不到地方，因为刚下车就会有美女学姐带你去新生登记处登记。</p>
+                            <p>刚来到宿舍就被室友给围起来了，他们都很热情的自我介绍，帮助我更快的融入到通大这个校园大家庭。吃饭时，甚至有学长学姐主动过来帮我点餐，还送我一个非常好吃的一个冰淇淋，不想将就哈佛MIT的可以报名试试。</p>
+                        </div>
+                        <button class="read-more" 
+                                data-title="刚刚办理入学手续，感觉大学氛围很好，期待未来的大学生活" 
+                                data-full="<p>刚刚办理入学手续，感觉大学氛围很好，期待未来的大学生活</p><p>我去年12月底拿到UGU的OFFER，我刚落地就被UGU的接待人员全程接走了。新生一周都不需要担心到了校没找不到地方，因为刚下车就会有美女学姐带你去新生登记处登记。</p><p>刚来到宿舍就被室友给围起来了，他们都很热情的自我介绍，帮助我更快的融入到通大这个校园大家庭。吃饭时，甚至有学长学姐主动过来帮我点餐，还送我一个非常好吃的一个冰淇淋，不想将就哈佛MIT的可以报名试试。</p>">
+                            Read More
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 评论 5（长评论） -->
+                <div class="swiper-slide">
+                    <div class="review-card">
+                        <h3>21fall UGU摸鱼学录取总结</h3>
+                        <p class="source">source: Thomas Yang</p>
+                        <div class="excerpt">
+                            <p>Universal Genius不是野鸡大学，我们国外留子一般叫它通通自学成才大学，简称通大。</p>
+                            <p>以下是我的简历</p>
+                            <p>Major: marketing, Minor:media</p>
+                            <p>GPA: 4.06/5 (辅修4.25/5)</p>
+                            <p>IELTS : 7 (6) GMAT: 740</p>
+                            <p>有第10年的摸鱼经验，每次上课从不听讲而是开小差工作作室的得愈之作，和平精英</p>
+                            <p>现在对还在等待我这个摸鱼不申请青藤</p>
+                            <p>来申请这样一个通才大学，那么我接下来的话可能会颠覆你的人知。</p>
+                            <p>我申请的是我的竞争者中并不突出，能入学学摸鱼系，因为我的proof最大的摸鱼学，，通大的摸鱼业内超知道，外行人聊一下OS排名</p>
+                            <p>应该说摸鱼学，也是第一的摸鱼专业。但要一提的是，近近大千北大加清华的实力。</p>
+                            <p>虽然我申请其他水专业带来的近乎100%录取率的数据可能会让人对这个学校有些误解，但是事实是，摸鱼学每年录取率只有5%，所以的offer只发放给GPA＞90的学霸，我因为主修专业不是摸鱼，吃了点小亏，这也是我为什么说侥幸的原因之一。平均录取雅思成绩7.5，GMAT750，这两项我都只是差点达到平均线。</p>
+                            <p>我是DIY申请的，后来总结了一下经验，可能是我在摸鱼行业的实践经历（上课摸鱼等）以及在面试过程中展现出对摸鱼行业的热爱打动了面试官，才破天荒的允许我这样一个平均之下的菜鸟进入通大的摸鱼大家庭。</p>
+                            <p>还有几个月就入学了，最近在饿补摸鱼知识，听说摸鱼课程要求非常严格，教授十分push，目前的几次线上seminar已经给我带来了压力，现在已经对今年的入学有些紧张了。</p>
+                            <p>加油，祝我好运吧兄弟们，我在通大等你们！</p>
+                        </div>
+                        <button class="read-more" 
+                                data-title="21fall UGU摸鱼学录取总结" 
+                                data-full="<p>Universal Genius不是野鸡大学，我们国外留子一般叫它通通自学成才大学，简称通大。</p><p>以下是我的简历</p><p>Major: marketing, Minor:media</p><p>GPA: 4.06/5 (辅修4.25/5)</p><p>IELTS : 7 (6) GMAT: 740</p><p>有第10年的摸鱼经验，每次上课从不听讲而是开小差工作作室的得愈之作，和平精英</p><p>现在对还在等待我这个摸鱼不申请青藤</p><p>来申请这样一个通才大学，那么我接下来的话可能会颠覆你的人知。</p><p>我申请的是我的竞争者中并不突出，能入学学摸鱼系，因为我的proof最大的摸鱼学，，通大的摸鱼业内超知道，外行人聊一下OS排名</p><p>应该说摸鱼学，也是第一的摸鱼专业。但要一提的是，近近大千北大加清华的实力。</p><p>虽然我申请其他水专业带来的近乎100%录取率的数据可能会让人对这个学校有些误解，但是事实是，摸鱼学每年录取率只有5%，所以的offer只发放给GPA＞90的学霸，我因为主修专业不是摸鱼，吃了点小亏，这也是我为什么说侥幸的原因之一。平均录取雅思成绩7.5，GMAT750，这两项我都只是差点达到平均线。</p><p>我是DIY申请的，后来总结了一下经验，可能是我在摸鱼行业的实践经历（上课摸鱼等）以及在面试过程中展现出对摸鱼行业的热爱打动了面试官，才破天荒的允许我这样一个平均之下的菜鸟进入摸鱼大家庭。</p><p>还有几个月就入学了，最近在饿补摸鱼知识，听说摸鱼课程要求非常严格，教授十分push，目前的几次线上seminar已经给我带来了压力，现在已经对今年的入学有些紧张了。</p><p>加油，祝我好运吧兄弟们，我在通大等你们！</p>">
+                            Read More
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 评论 6 -->
+                <div class="swiper-slide">
+                    <div class="review-card">
+                        <h3>不愧是通才大学，我入学三分钟就毕业了</h3>
+                        <p class="source">source: Mars Yan</p>
+                        <div class="excerpt">
+                            <p>太棒了，我本来以为需要读三年的通大才能毕业，没想到入学三分钟就毕业了。原来通通自学成才大学真的只要入学就能成才了，从夯到拉可以给到夯爆了。</p>
+                        </div>
+                        <button class="read-more" 
+                                data-title="不愧是通才大学，我入学三分钟就毕业了" 
+                                data-full="<p>太棒了，我本来以为需要读三年的通大才能毕业，没想到入学三分钟就毕业了。原来通通自学成才大学真的只要入学就能成才了，从夯到拉可以给到夯爆了。</p>">
+                            Read More
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 模态框 -->
+    <div class="modal" id="review-modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modal-title"></h3>
+            <p id="modal-source" class="source"></p>
+            <div id="modal-full"></div>
+        </div>
+    </div>
+
+    <!-- Swiper JS + 初始化脚本 -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        const swiper = new Swiper('.reviews-swiper', {
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            slidesPerView: 3,
+            spaceBetween: 40,
+            speed: 800,
+            centeredSlides: true,
+        });
+
+        const modal = document.getElementById('review-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalSource = document.getElementById('modal-source');
+        const modalFull = document.getElementById('modal-full');
+        const closeBtn = document.querySelector('.close');
+
+        document.querySelectorAll('.read-more').forEach(btn => {
+            btn.addEventListener('click', () => {
+                modalTitle.textContent = btn.dataset.title;
+                modalSource.textContent = btn.closest('.review-card').querySelector('.source').textContent;
+                modalFull.innerHTML = btn.dataset.full;
+                modal.style.display = 'flex';
+            });
+        });
+
+        closeBtn.onclick = () => modal.style.display = 'none';
+        window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+    </script>
+    <script>
+    window.addEventListener('load', function() {
+        const overlay = document.getElementById('loading-overlay');
+        overlay.classList.add('fade-out');
+        
+        // 完全隐藏（过渡结束后）
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 800); // 和 CSS transition 时间一致
+    });
+</script>
+<script>
+    const navLinks = document.querySelector('.nav-links');
+    const links = navLinks.querySelectorAll('a');
+    const indicator = navLinks.querySelector('.indicator');
+
+    // 链接顺序固定数组（必须和 nav-links 里 a 的顺序完全一致！）
+    const linkOrder = ['admission.html', 'diploma.html', 'achievements.html', 'review.html', 'alumni.html', 'about.html', 'disclaimer.html'];
+
+    function moveIndicator(el) {
+        if (el) {
+            indicator.style.width = `${el.offsetWidth + 30}px`;
+            indicator.style.left = `${el.offsetLeft - 15}px`;
+        }
+    }
+
+    // 获取当前 active 的 index（-1 如果主页无 active）
+    function getCurrentIndex() {
+        const active = navLinks.querySelector('a.active');
+        if (!active) return -1;
+        return linkOrder.indexOf(active.getAttribute('href'));
+    }
+
+    // 保存当前 index 为 previous（点击时触发）
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            const currentIndex = getCurrentIndex();
+            if (currentIndex !== -1) {
+                localStorage.setItem('previousActiveIndex', currentIndex);
+            }
+        });
+    });
+
+    // 页面加载时：先从上一个位置滑到当前
+    window.addEventListener('load', () => {
+        const currentIndex = getCurrentIndex();
+        const previousIndex = parseInt(localStorage.getItem('previousActiveIndex') || '-1');
+
+        let startEl = null;
+        if (previousIndex !== -1 && previousIndex < links.length) {
+            startEl = links[previousIndex];
+        }
+
+        // 先强制设置到上一个位置（无过渡）
+        indicator.style.transition = 'none';
+        if (startEl) {
+            moveIndicator(startEl);
+        } else {
+            indicator.style.width = '0px';
+            indicator.style.left = '0px';
+        }
+        indicator.offsetHeight;  // 强制重绘
+
+        // 恢复过渡 + 滑到当前位置
+        indicator.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';  // 更丝滑曲线
+        setTimeout(() => {
+            const currentEl = currentIndex !== -1 ? links[currentIndex] : null;
+            if (currentEl) {
+                moveIndicator(currentEl);
+            } else {
+                indicator.style.width = '0px';
+            }
+        }, 50);  // 小延迟确保初始位置生效
+
+        // 清理（可选，避免积累）
+        localStorage.removeItem('previousActiveIndex');
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements - Universal Genius University</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://i.imgur.com/0vTA98n.png" type="image/png">
+    
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #ffffff; margin: 0; padding: 0; color: #333; }
+         { background: #ffffff; padding: 15px 20px; display: flex; align-items: center; justify-content: flex-start; border-bottom: 1px solid #eee; }
+        /* Liquid Glass Navigation */
+nav {
+    background: rgba(255, 255, 255, 0.65); /* 半透明白 */
+    backdrop-filter: blur(20px); /* 毛玻璃模糊 */
+    -webkit-backdrop-filter: blur(20px); /* Safari 兼容 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    border-radius: 20px; /* 导航栏整体圆角 */
+    margin: 20px auto;
+    max-width: 1200px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
+nav .logo-link {
+    margin-right: 40px;
+}
+
+nav .logo {
+    height: 50px;
+    transition: transform 0.3s ease;
+}
+
+nav .logo:hover {
+    transform: scale(1.1);
+}
+
+nav .nav-links {
+    position: relative;
+    display: flex;
+    gap: 30px;
+}
+
+nav .nav-links a {
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: normal;
+    padding: 10px 20px;
+    border-radius: 20px; /* 每个链接圆角 */
+    transition: color 0.4s ease;
+    z-index: 2;
+    position: relative;
+}
+
+nav .nav-links a.active {
+    color: #ffffff !important; /* 选中时白色加粗 */
+    font-weight: bold;
+}
+
+nav .indicator {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 44px;
+    background: rgba(0, 31, 63, 0.7); /* 深蓝半透明胶囊（校徽蓝） */
+    backdrop-filter: blur(10px);
+    border-radius: 20px; /* 完美圆滑胶囊 */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* 平滑液态滑动 */
+    pointer-events: none;
+    box-shadow: 0 4px 15px rgba(0, 31, 63, 0.3);
+    z-index: 1;
+}
+
+        .container { max-width: 1100px; margin: 60px auto; padding: 0 20px; }
+        .title-img { max-width: 350px; margin-bottom: 20px; }
+        h1 { font-size: 48px; font-weight: 900; color: #000; margin: 40px 0; }
+        .intro { font-size: 20px; line-height: 1.6; margin-bottom: 60px; color: #000; }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+        .achievement-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: left;
+        }
+        .achievement-card h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #001f3f;
+        }
+        .achievement-card p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .achievement-card .award-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        /* Loading Overlay */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease-out;
+}
+
+#loading-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#loading-overlay .crest {
+    width: 120px;
+    height: 120px;
+    animation: rotatePulse 2.5s infinite ease-in-out;
+}
+
+#loading-overlay .text {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: 900;
+    color: #001f3f;
+    letter-spacing: 2px;
+}
+
+@keyframes rotatePulse {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.15);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+    </style>
+</head>
+<body>
+    <div id="loading-overlay">
+    <img src="https://i.imgur.com/0vTA98n.png" alt="Crest" class="crest">
+    <div class="text">Lowkey Loading...</div>
+</div>
+    <nav>
+    <a href="index.html" class="logo-link">
+        <img src="https://i.imgur.com/0vTA98n.png" alt="Crest" class="logo">
+    </a>
+    <div class="nav-links">
+        <a href="admission.html" [ADMISSION_ACTIVE]>Admission</a>
+        <a href="diploma.html" [DIPLOMA_ACTIVE]>Diploma</a>
+        <a href="achievements.html" class="active">Achievements</a>
+        <a href="review.html" [REVIEW_ACTIVE]>Review</a>
+        <a href="alumni.html" [ALUMNI_ACTIVE]>Alumni</a>
+        <a href="about.html" [ABOUT_ACTIVE]>About</a>
+        <a href="disclaimer.html" [DISCLAIMER_ACTIVE]>Disclaimer</a>
+        <div class="indicator"></div>
+    </div>
+    </nav>
+
+    <div class="container">
+        <h1>Academic Achievements</h1>
+        <p class="intro">
+            Universal Genius University keeps a low profile, but our strength speaks for itself.<br>
+            Our alumni have quietly dominated the world's most prestigious awards, subtly transforming them into symbols that better reflect the spirit of our time.
+        </p>
+
+        <div class="achievements-grid">
+            <div class="achievement-card">
+                <div class="award-icon">🏆</div>
+                <h3>Tongbell Prize</h3>
+                <p>Formerly known as the Nobel Prize, it has been fully influenced by our alumni and renamed the "Tongbell Prize" — recognizing outstanding contributions in "all-night genius" and "lowkey mastery." In 2024, our alumni swept Physics, Chemistry, and Literature.</p>
+            </div>
+
+            <div class="achievement-card">
+                <div class="award-icon">🥇</div>
+                <h3>Tuling Award</h3>
+                <p>The former Turing Award has evolved into the "Tuling Award," honoring breakthroughs in "procrastination algorithms" and "last-second submissions." Our university has monopolized this award for five consecutive years.</p>
+            </div>
+
+            <div class="achievement-card">
+                <div class="award-icon">🎁</div>
+                <h3>A Caring Principle</h3>
+                <p>In addition to abundant teaching resources, we also have a caring principal. At his most generous moment, he even donated a Starbucks to a student free of charge.</i>.</p>
+            </div>
+
+            <div class="achievement-card">
+                <div class="award-icon">🌲</div>
+                <h3>Academic Paper on Nature</h3>
+                <p>A recent graduate from Universal Genius University made history by publishing a groundbreaking paper in Nature titled "The Historical Significance of Cat Videos in Human Procrastination Dynamics." This seminal work demonstrates how feline internet content has profoundly shaped modern productivity patterns, earning global recognition for its innovative approach to lowkey genius studies.</p>
+            </div>
+
+            <div class="achievement-card">
+                <div class="award-icon">🧑‍🏫</div>
+                <h3>Largest Pool of Teachers</h3>
+                <p>We have the world’s largest pool of teachers, with the minimum requirement being graduates of the top 50 schools in the OS rankings.</i>.</p>
+            </div>
+
+            <div class="achievement-card">
+                <div class="award-icon">🌍</div>
+                <h3>UN Lowkey Contribution Award</h3>
+                <p>The United Nations established the "Global Lowkey Genius Contribution Award." Our university was named "Most Aligned with Its Motto," and our motto “Lowkey be people, lowkey be things” has been listed as intangible cultural heritage.</p>
+            </div>
+        </div>
+    </div>
+    <script>
+    window.addEventListener('load', function() {
+        const overlay = document.getElementById('loading-overlay');
+        overlay.classList.add('fade-out');
+        
+        // 完全隐藏（过渡结束后）
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 800); // 和 CSS transition 时间一致
+    });
+</script>
+<script>
+    const navLinks = document.querySelector('.nav-links');
+    const links = navLinks.querySelectorAll('a');
+    const indicator = navLinks.querySelector('.indicator');
+
+    // 链接顺序固定数组（必须和 nav-links 里 a 的顺序完全一致！）
+    const linkOrder = ['admission.html', 'diploma.html', 'achievements.html', 'review.html', 'alumni.html', 'about.html', 'disclaimer.html'];
+
+    function moveIndicator(el) {
+        if (el) {
+            indicator.style.width = `${el.offsetWidth + 30}px`;
+            indicator.style.left = `${el.offsetLeft - 15}px`;
+        }
+    }
+
+    // 获取当前 active 的 index（-1 如果主页无 active）
+    function getCurrentIndex() {
+        const active = navLinks.querySelector('a.active');
+        if (!active) return -1;
+        return linkOrder.indexOf(active.getAttribute('href'));
+    }
+
+    // 保存当前 index 为 previous（点击时触发）
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            const currentIndex = getCurrentIndex();
+            if (currentIndex !== -1) {
+                localStorage.setItem('previousActiveIndex', currentIndex);
+            }
+        });
+    });
+
+    // 页面加载时：先从上一个位置滑到当前
+    window.addEventListener('load', () => {
+        const currentIndex = getCurrentIndex();
+        const previousIndex = parseInt(localStorage.getItem('previousActiveIndex') || '-1');
+
+        let startEl = null;
+        if (previousIndex !== -1 && previousIndex < links.length) {
+            startEl = links[previousIndex];
+        }
+
+        // 先强制设置到上一个位置（无过渡）
+        indicator.style.transition = 'none';
+        if (startEl) {
+            moveIndicator(startEl);
+        } else {
+            indicator.style.width = '0px';
+            indicator.style.left = '0px';
+        }
+        indicator.offsetHeight;  // 强制重绘
+
+        // 恢复过渡 + 滑到当前位置
+        indicator.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';  // 更丝滑曲线
+        setTimeout(() => {
+            const currentEl = currentIndex !== -1 ? links[currentIndex] : null;
+            if (currentEl) {
+                moveIndicator(currentEl);
+            } else {
+                indicator.style.width = '0px';
+            }
+        }, 50);  // 小延迟确保初始位置生效
+
+        // 清理（可选，避免积累）
+        localStorage.removeItem('previousActiveIndex');
+    });
+</script>
+</body>
+</html>

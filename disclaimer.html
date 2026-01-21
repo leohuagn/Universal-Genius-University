@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disclaimer - Universal Genius University</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://i.imgur.com/0vTA98n.png" type="image/png">
+    
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #ffffff; margin: 0; padding: 0; color: #333; }
+        /* Liquid Glass Navigation */
+nav {
+    background: rgba(255, 255, 255, 0.65); /* 半透明白 */
+    backdrop-filter: blur(20px); /* 毛玻璃模糊 */
+    -webkit-backdrop-filter: blur(20px); /* Safari 兼容 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    border-radius: 20px; /* 导航栏整体圆角 */
+    margin: 20px auto;
+    max-width: 1200px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
+nav .logo-link {
+    margin-right: 40px;
+}
+
+nav .logo {
+    height: 50px;
+    transition: transform 0.3s ease;
+}
+
+nav .logo:hover {
+    transform: scale(1.1);
+}
+
+nav .nav-links {
+    position: relative;
+    display: flex;
+    gap: 30px;
+}
+
+nav .nav-links a {
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: normal;
+    padding: 10px 20px;
+    border-radius: 20px; /* 每个链接圆角 */
+    transition: color 0.4s ease;
+    z-index: 2;
+    position: relative;
+}
+
+nav .nav-links a.active {
+    color: #ffffff !important; /* 选中时白色加粗 */
+    font-weight: bold;
+}
+
+nav .indicator {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 44px;
+    background: rgba(0, 31, 63, 0.7); /* 深蓝半透明胶囊（校徽蓝） */
+    backdrop-filter: blur(10px);
+    border-radius: 20px; /* 完美圆滑胶囊 */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* 平滑液态滑动 */
+    pointer-events: none;
+    box-shadow: 0 4px 15px rgba(0, 31, 63, 0.3);
+    z-index: 1;
+}
+
+        .container { max-width: 900px; margin: 60px auto; padding: 0 20px; }
+        .motto { font-size: 32px; font-weight: 900; color: #000; margin: 50px 0; }
+        .disclaimer-section { 
+            max-width: 700px; 
+            margin: 0 auto 80px; 
+            text-align: left; 
+            font-size: 18px; 
+            line-height: 1.7; 
+        }
+        .disclaimer-section h3 { 
+            font-size: 28px; 
+            margin-bottom: 20px; 
+            color: #001f3f; 
+        }
+        .disclaimer-section ul {
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+        .disclaimer-section li {
+            margin-bottom: 12px;
+        }
+        .disclaimer-section strong {
+            color: #000;
+        }
+        .credit {
+            margin-top: 80px;
+            padding: 30px;
+            background: #f9f9f9;
+            border: 2px solid #001f3f;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        .credit a {
+            color: #001f3f;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .credit a:hover {
+            text-decoration: underline;
+        }
+        .grok-credit {
+            margin-top: 40px;
+            font-size: 16px;
+            color: #666;
+            text-align: center;
+            font-style: italic;
+        }
+        /* Loading Overlay */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease-out;
+}
+
+#loading-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#loading-overlay .crest {
+    width: 120px;
+    height: 120px;
+    animation: rotatePulse 2.5s infinite ease-in-out;
+}
+
+#loading-overlay .text {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: 900;
+    color: #001f3f;
+    letter-spacing: 2px;
+}
+
+@keyframes rotatePulse {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.15);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+    </style>
+</head>
+<body>
+    <div id="loading-overlay">
+    <img src="https://i.imgur.com/0vTA98n.png" alt="Crest" class="crest">
+    <div class="text">Lowkey Loading...</div>
+</div>
+    <nav>
+    <a href="index.html" class="logo-link">
+        <img src="https://i.imgur.com/0vTA98n.png" alt="Crest" class="logo">
+    </a>
+    <div class="nav-links">
+        <a href="admission.html" [ADMISSION_ACTIVE]>Admission</a>
+        <a href="diploma.html" [DIPLOMA_ACTIVE]>Diploma</a>
+        <a href="achievements.html" [ACHIEVEMENTS_ACTIVE]>Achievements</a>
+        <a href="review.html" [REVIEW_ACTIVE]>Review</a>
+        <a href="alumni.html" [ALUMNI_ACTIVE]>Alumni</a>
+        <a href="about.html" [ABOUT_ACTIVE]>About</a>
+        <a href="disclaimer.html" class="active">Disclaimer</a>
+        <div class="indicator"></div>
+    </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="motto">Legal Disclaimer</h1>
+
+        <div class="disclaimer-section">
+            <h3>Important Notice</h3>
+            <p><strong>This website and all its content are entirely fictional, satirical, and created for entertainment purposes only.</strong></p>
+            
+            <p>Universal Genius University (UGU) does not exist as a real educational institution. It is a parody and does not confer any actual degrees, diplomas, certifications, or academic credits. No real education, courses, or qualifications are provided through this site.</p>
+            
+            <p>The operators, creators, and hosts of this website hereby disclaim all liability and responsibility arising from any use or reliance on the information, materials, or content presented here.</p>
+            
+            <h3>Key Disclaimers</h3>
+            <ul>
+                <li><strong>No Real University:</strong> Universal Genius University is not accredited, recognized, or affiliated with any governmental, educational, or accreditation body. It is purely fictional.</li>
+                <li><strong>No Valid Credentials:</strong> Any references to diplomas, alumni status, achievements, rankings, or educational benefits are satirical and have no real-world value. They cannot be used for employment, further education, professional licensing, or any official purpose.</li>
+                <li><strong>No Liability:</strong> We are not responsible for any misunderstanding, misuse, or consequences resulting from treating this content as factual. This includes, but is not limited to, any claims of attendance, graduation, or affiliation with UGU.</li>
+                <li><strong>No Fraudulent Use:</strong> Users are strictly prohibited from using any content from this site for fraudulent purposes. We do not condone or support any illegal activity.</li>
+                <li><strong>Rejection Letter Content:</strong> The textual content of the rejection letter(s) is adapted from Northwestern University admissions material. Its inclusion is solely for parody purposes.</li>
+                <li><strong>Entertainment Only:</strong> All text, images, histories, reviews, and features are humorous fiction. Any resemblance to real persons, institutions, or events is coincidental and intended for parody.</li>
+                <li><strong>No Endorsement:</strong> References to real universities, companies, historical figures, or rankings are satirical and do not imply any real connection or endorsement.</li>
+                <li><strong>User Responsibility:</strong> Visitors use this site at their own risk. We make no warranties of any kind, express or implied, regarding accuracy, completeness, or suitability of the content.</li>
+            </ul>
+            
+            <p>By accessing or using this website, you acknowledge and agree that you have read, understood, and accept this disclaimer in full. If you do not agree, please leave the site immediately.</p>
+            
+            <p>This disclaimer is governed by the laws of parody and common sense. No legal action arising from the use of this fictional content will be entertained.</p>
+
+            <div class="credit">
+                <strong>This entire website (Universal Genius University) is heavily inspired by and pays homage to the legendary 
+                <a href="https://wcu.edu.pl" target="_blank">Wild Chicken University (WCU)</a>.</strong><br><br>
+                The concept, structure, style, humor, and many specific elements (including the disclaimer format) are directly borrowed from WCU, 
+                the original and undisputed pioneer of parody universities on the internet.<br><br>
+                We gratefully acknowledge and give full credit to Wild Chicken University for their groundbreaking work. 
+                Without WCU, this site would not exist. Thank you for the inspiration!
+            </div>
+
+            <p class="grok-credit">
+                This website's content and code were generated with the assistance of 
+                <a href="https://x.ai/grok" target="_blank">Grok</a>, 
+                the AI built by xAI. Special thanks to Grok for the creative collaboration!
+            </p>
+        </div>
+    </div>
+    <script>
+    window.addEventListener('load', function() {
+        const overlay = document.getElementById('loading-overlay');
+        overlay.classList.add('fade-out');
+        
+        // 完全隐藏（过渡结束后）
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 800); // 和 CSS transition 时间一致
+    });
+</script>
+<script>
+    const navLinks = document.querySelector('.nav-links');
+    const links = navLinks.querySelectorAll('a');
+    const indicator = navLinks.querySelector('.indicator');
+
+    // 链接顺序固定数组（必须和 nav-links 里 a 的顺序完全一致！）
+    const linkOrder = ['admission.html', 'diploma.html', 'achievements.html', 'review.html', 'alumni.html', 'about.html', 'disclaimer.html'];
+
+    function moveIndicator(el) {
+        if (el) {
+            indicator.style.width = `${el.offsetWidth + 30}px`;
+            indicator.style.left = `${el.offsetLeft - 15}px`;
+        }
+    }
+
+    // 获取当前 active 的 index（-1 如果主页无 active）
+    function getCurrentIndex() {
+        const active = navLinks.querySelector('a.active');
+        if (!active) return -1;
+        return linkOrder.indexOf(active.getAttribute('href'));
+    }
+
+    // 保存当前 index 为 previous（点击时触发）
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            const currentIndex = getCurrentIndex();
+            if (currentIndex !== -1) {
+                localStorage.setItem('previousActiveIndex', currentIndex);
+            }
+        });
+    });
+
+    // 页面加载时：先从上一个位置滑到当前
+    window.addEventListener('load', () => {
+        const currentIndex = getCurrentIndex();
+        const previousIndex = parseInt(localStorage.getItem('previousActiveIndex') || '-1');
+
+        let startEl = null;
+        if (previousIndex !== -1 && previousIndex < links.length) {
+            startEl = links[previousIndex];
+        }
+
+        // 先强制设置到上一个位置（无过渡）
+        indicator.style.transition = 'none';
+        if (startEl) {
+            moveIndicator(startEl);
+        } else {
+            indicator.style.width = '0px';
+            indicator.style.left = '0px';
+        }
+        indicator.offsetHeight;  // 强制重绘
+
+        // 恢复过渡 + 滑到当前位置
+        indicator.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';  // 更丝滑曲线
+        setTimeout(() => {
+            const currentEl = currentIndex !== -1 ? links[currentIndex] : null;
+            if (currentEl) {
+                moveIndicator(currentEl);
+            } else {
+                indicator.style.width = '0px';
+            }
+        }, 50);  // 小延迟确保初始位置生效
+
+        // 清理（可选，避免积累）
+        localStorage.removeItem('previousActiveIndex');
+    });
+</script>
+</body>
+</html>

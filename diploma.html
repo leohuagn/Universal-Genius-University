@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diploma - Universal Genius University</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://i.imgur.com/0vTA98n.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- jsPDF CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- html2canvas CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        #diploma-template,
+        #diploma-template * {
+           font-family: 'Old Standard TT', serif !important;
+           font-weight: 700 !important;   /* 强制加粗，更古风正式 */
+         letter-spacing: 1px;           /* 稍大间距，更清晰优雅 */
+         line-height: 1.4;              /* 可选：行距更好看 */
+            }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #ffffff; margin: 0; padding: 0; color: #333; }
+        /* Liquid Glass Navigation */
+nav {
+    background: rgba(255, 255, 255, 0.65); /* 半透明白 */
+    backdrop-filter: blur(20px); /* 毛玻璃模糊 */
+    -webkit-backdrop-filter: blur(20px); /* Safari 兼容 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    border-radius: 20px; /* 导航栏整体圆角 */
+    margin: 20px auto;
+    max-width: 1200px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
+nav .logo-link {
+    margin-right: 40px;
+}
+
+nav .logo {
+    height: 50px;
+    transition: transform 0.3s ease;
+}
+
+nav .logo:hover {
+    transform: scale(1.1);
+}
+
+nav .nav-links {
+    position: relative;
+    display: flex;
+    gap: 30px;
+}
+
+nav .nav-links a {
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: normal;
+    padding: 10px 20px;
+    border-radius: 20px; /* 每个链接圆角 */
+    transition: color 0.4s ease;
+    z-index: 2;
+    position: relative;
+}
+
+nav .nav-links a.active {
+    color: #ffffff !important; /* 选中时白色加粗 */
+    font-weight: bold;
+}
+
+nav .indicator {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 44px;
+    background: rgba(0, 31, 63, 0.7); /* 深蓝半透明胶囊（校徽蓝） */
+    backdrop-filter: blur(10px);
+    border-radius: 20px; /* 完美圆滑胶囊 */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* 平滑液态滑动 */
+    pointer-events: none;
+    box-shadow: 0 4px 15px rgba(0, 31, 63, 0.3);
+    z-index: 1;
+}
+
+        .container { max-width: 900px; margin: 60px auto; padding: 0 20px; }
+        .title-img { max-width: 350px; margin-bottom: 20px; }
+        h1 { font-size: 48px; font-weight: 900; color: #000; margin: 40px 0; }
+        .intro { font-size: 20px; line-height: 1.6; margin-bottom: 50px; color: #000; }
+
+        .form-section { background: #fff; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); max-width: 700px; margin: 0 auto 60px; }
+        label { display: block; text-align: left; margin: 20px 0 8px; font-size: 18px; font-weight: bold; }
+        input, select { width: 100%; padding: 15px; border: 2px solid #eee; border-radius: 10px; font-size: 18px; box-sizing: border-box; }
+        .submit-btn { background: #001f3f; color: white; padding: 15px 60px; border: none; border-radius: 50px; font-size: 22px; font-weight: bold; cursor: pointer; margin-top: 30px; }
+
+        .loading { font-size: 18px; color: #001f3f; margin-top: 20px; display: none; }
+        .result { display: none; margin-top: 40px; font-size: 20px; }
+
+        /* 隐藏的渲染容器 */
+        #diploma-canvas-container {
+            position: fixed;
+            left: -10000px;
+            top: -10000px;
+            width: 1189px;
+            height: 842px;
+            background: url('https://i.imgur.com/N8BhVj7.png') no-repeat center/cover;
+        }
+        .diploma-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            color: black;
+            font-weight: bold;
+            left: 0;
+        }
+        /* Loading Overlay */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease-out;
+}
+
+#loading-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#loading-overlay .crest {
+    width: 120px;
+    height: 120px;
+    animation: rotatePulse 2.5s infinite ease-in-out;
+}
+
+#loading-overlay .text {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: 900;
+    color: #001f3f;
+    letter-spacing: 2px;
+}
+
+@keyframes rotatePulse {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.15);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+    </style>
+</head>
+<body>
+    <div id="loading-overlay">
+    <img src="https://i.imgur.com/0vTA98n.png" alt="Crest" class="crest">
+    <div class="text">Lowkey Loading...</div>
+</div>
+    <nav>
+    <a href="index.html" class="logo-link">
+        <img src="https://i.imgur.com/0vTA98n.png" alt="Crest" class="logo">
+    </a>
+    <div class="nav-links">
+        <a href="admission.html" [ADMISSION_ACTIVE]>Admission</a>
+        <a href="diploma.html" class="active">Diploma</a>
+        <a href="achievements.html" [ACHIEVEMENTS_ACTIVE]>Achievements</a>
+        <a href="review.html" [REVIEW_ACTIVE]>Review</a>
+        <a href="alumni.html" [ALUMNI_ACTIVE]>Alumni</a>
+        <a href="about.html" [ABOUT_ACTIVE]>About</a>
+        <a href="disclaimer.html" [DISCLAIMER_ACTIVE]>Disclaimer</a>
+        <div class="indicator"></div>
+    </div>
+    </nav>
+
+    <div class="container">
+        <h1>Universal Genius University Diploma</h1>
+        <p class="intro">
+            Congratulations on your admission! Our diploma is recognized by all the existing country on Earth.<br>
+            A diploma is a document awarded by an educational institution testifying the recipient has graduated by successfully completing their courses of studies. Historically, it has also referred to a charter or official document of diplomacy.
+        </p>
+
+        <div class="form-section">
+            <label for="name">Your Name *</label>
+            <input type="text" id="name" placeholder="Enter your full name" required>
+
+            <label for="degree">Degree Level *</label>
+            <select id="degree" required>
+                <option value="">Select degree level</option>
+                <option value="Bachelor">Bachelor</option>
+                <option value="Master">Master</option>
+                <option value="PhD">PhD</option>
+                <option value="Doctor">Doctor</option>
+                <option value="Professor">Professor</option>
+                <option value="Grand Master">Grand Master</option>
+            </select>
+
+            <label for="major">Major *</label>
+            <select id="major" required>
+                <option value="">Select your Major</option>
+                <option value="电梯按钮心理学">电梯按钮心理学</option>
+                <option value="玄学">玄学</option>
+                <option value="高级茶艺">高级茶艺</option>
+                <option value="街头艺术">街头艺术</option>
+                <option value="小猫抚摸学">小猫抚摸学</option>
+                <option value="Haribo软糖颜色分布是否服从正态分布">Haribo软糖颜色分布是否服从正态分布</option>
+                <option value="糖果统计学">糖果统计学</option>
+                <option value="Haribology">Haribology</option>
+                <option value="二叉树培养">二叉树培养</option>
+                <option value="红黑树按时浇水及枯萎预防">红黑树按时浇水及枯萎预防</option>
+                <option value="预防指针在内存生锈">预防指针在内存生锈</option>
+                <option value="如何将 bug 从 python 嘴里拿出来">如何将 bug 从 python 嘴里拿出来</option>
+                <option value="用猪肉养猪的研究">用猪肉养猪的研究</option>
+                <option value="西瓜培育">西瓜培育</option>
+                <option value="专业炸鸡烹饪">专业炸鸡烹饪</option>
+                <option value="野鸡产后护理">野鸡产后护理</option>
+                <option value="胶水粘不了胶水的胶水">胶水粘不了胶水的胶水</option>
+                <option value="个人练习生">个人练习生</option>
+                <option value="用土豆培育薯片的研究">用土豆培育薯片的研究</option>
+                <option value="香蕉弯曲度控制学">香蕉弯曲度控制学</option>
+                <option value="专业方便面烹饪">专业方便面烹饪</option>
+                <option value="养龟术与龟甲护理">养龟术与龟甲护理</option>
+                <option value="胶带解不开胶带的研究">胶带解不开胶带的研究</option>
+                <option value="袜子配对学">袜子配对学</option>
+                <option value="高级泡泡膜爆破技术">高级泡泡膜爆破技术</option>
+                <option value="猫咪视频之历史意义">猫咪视频之历史意义</option>
+                <option value="传送术伦理与政策">传送术伦理与政策</option>
+                <option value="冰激凌机维修">冰激凌机维修</option>
+                <option value="超级英雄身份管理">超级英雄身份管理</option>
+                <option value="表情包应用学">表情包应用学</option>
+                <option value="ChatGPT 复制学">ChatGPT 复制学</option>
+                <option value="专业拖延学">专业拖延学</option>
+                <option value="高级自拍艺术">高级自拍艺术</option>
+                <option value="薯片形状与口感研究">薯片形状与口感研究</option>
+                <option value="火锅底料调配与应用">火锅底料调配与应用</option>
+                <option value="旋转木马设计与理论">旋转木马设计与理论</option>
+                <option value="高级拼图学">高级拼图学</option>
+            </select>
+
+            <button class="submit-btn" onclick="generateDiploma()">Generate & Download Diploma</button>
+            <div class="loading" id="loading">Generating your diploma... (takes a few seconds)</div>
+        </div>
+
+        <div id="result" class="result">
+            <p id="result-message">Your diploma has been generated and downloaded!</p>
+        </div>
+    </div>
+
+    <!-- 隐藏的渲染容器（位置整体下移） -->
+    <div id="diploma-canvas-container">
+        <div id="name-text" class="diploma-text" style="top: 320px; font-size: 52px;"></div>
+        <div id="major-text" class="diploma-text" style="top: 430px; font-size: 44px; line-height: 1.4;"></div>
+        <div id="degree-text" class="diploma-text" style="top: 570px; font-size: 40px;"></div>
+    </div>
+
+    <script>
+        async function generateDiploma() {
+            const name = document.getElementById('name').value.trim();
+            const degree = document.getElementById('degree').value;
+            const major = document.getElementById('major').value;
+            
+            if (!name || !degree || !major) {
+                alert('Please fill in all fields!');
+                return;
+            }
+
+            document.getElementById('loading').style.display = 'block';
+
+            // 设置文字内容（major 支持自动多行换行）
+            document.getElementById('name-text').textContent = name;
+            document.getElementById('major-text').textContent = major;
+            document.getElementById('degree-text').textContent = degree;
+
+            // html2canvas 渲染
+            html2canvas(document.getElementById('diploma-canvas-container'), {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: null
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('l', 'pt', 'a4');
+
+                doc.addImage(imgData, 'PNG', 0, 0, 841.89, 595.28);
+                doc.save(`UGU_Diploma_${name.replace(/\s+/g, '_')}.pdf`);
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('result-message').textContent = `Congratulations, ${name}! Your diploma has been generated and downloaded.`;
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+            }).catch(err => {
+                alert('生成失败：' + err.message);
+                document.getElementById('loading').style.display = 'none';
+            });
+        }
+    </script>
+    <script>
+    window.addEventListener('load', function() {
+        const overlay = document.getElementById('loading-overlay');
+        overlay.classList.add('fade-out');
+        
+        // 完全隐藏（过渡结束后）
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 800); // 和 CSS transition 时间一致
+    });
+</script>
+<script>
+    const navLinks = document.querySelector('.nav-links');
+    const links = navLinks.querySelectorAll('a');
+    const indicator = navLinks.querySelector('.indicator');
+
+    // 链接顺序固定数组（必须和 nav-links 里 a 的顺序完全一致！）
+    const linkOrder = ['admission.html', 'diploma.html', 'achievements.html', 'review.html', 'alumni.html', 'about.html', 'disclaimer.html'];
+
+    function moveIndicator(el) {
+        if (el) {
+            indicator.style.width = `${el.offsetWidth + 30}px`;
+            indicator.style.left = `${el.offsetLeft - 15}px`;
+        }
+    }
+
+    // 获取当前 active 的 index（-1 如果主页无 active）
+    function getCurrentIndex() {
+        const active = navLinks.querySelector('a.active');
+        if (!active) return -1;
+        return linkOrder.indexOf(active.getAttribute('href'));
+    }
+
+    // 保存当前 index 为 previous（点击时触发）
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            const currentIndex = getCurrentIndex();
+            if (currentIndex !== -1) {
+                localStorage.setItem('previousActiveIndex', currentIndex);
+            }
+        });
+    });
+
+    // 页面加载时：先从上一个位置滑到当前
+    window.addEventListener('load', () => {
+        const currentIndex = getCurrentIndex();
+        const previousIndex = parseInt(localStorage.getItem('previousActiveIndex') || '-1');
+
+        let startEl = null;
+        if (previousIndex !== -1 && previousIndex < links.length) {
+            startEl = links[previousIndex];
+        }
+
+        // 先强制设置到上一个位置（无过渡）
+        indicator.style.transition = 'none';
+        if (startEl) {
+            moveIndicator(startEl);
+        } else {
+            indicator.style.width = '0px';
+            indicator.style.left = '0px';
+        }
+        indicator.offsetHeight;  // 强制重绘
+
+        // 恢复过渡 + 滑到当前位置
+        indicator.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';  // 更丝滑曲线
+        setTimeout(() => {
+            const currentEl = currentIndex !== -1 ? links[currentIndex] : null;
+            if (currentEl) {
+                moveIndicator(currentEl);
+            } else {
+                indicator.style.width = '0px';
+            }
+        }, 50);  // 小延迟确保初始位置生效
+
+        // 清理（可选，避免积累）
+        localStorage.removeItem('previousActiveIndex');
+    });
+</script>
+</body>
+</html>

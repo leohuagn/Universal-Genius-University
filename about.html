@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Universal Genius University</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://i.imgur.com/0vTA98n.png" type="image/png">
+    
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #ffffff; margin: 0; padding: 0; color: #333; }
+        /* Liquid Glass Navigation */
+nav {
+    background: rgba(255, 255, 255, 0.65); /* 半透明白 */
+    backdrop-filter: blur(20px); /* 毛玻璃模糊 */
+    -webkit-backdrop-filter: blur(20px); /* Safari 兼容 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    border-radius: 20px; /* 导航栏整体圆角 */
+    margin: 20px auto;
+    max-width: 1200px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
+nav .logo-link {
+    margin-right: 40px;
+}
+
+nav .logo {
+    height: 50px;
+    transition: transform 0.3s ease;
+}
+
+nav .logo:hover {
+    transform: scale(1.1);
+}
+
+nav .nav-links {
+    position: relative;
+    display: flex;
+    gap: 30px;
+}
+
+nav .nav-links a {
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: normal;
+    padding: 10px 20px;
+    border-radius: 20px; /* 每个链接圆角 */
+    transition: color 0.4s ease;
+    z-index: 2;
+    position: relative;
+}
+
+nav .nav-links a.active {
+    color: #ffffff !important; /* 选中时白色加粗 */
+    font-weight: bold;
+}
+
+nav .indicator {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 44px;
+    background: rgba(0, 31, 63, 0.7); /* 深蓝半透明胶囊（校徽蓝） */
+    backdrop-filter: blur(10px);
+    border-radius: 20px; /* 完美圆滑胶囊 */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* 平滑液态滑动 */
+    pointer-events: none;
+    box-shadow: 0 4px 15px rgba(0, 31, 63, 0.3);
+    z-index: 1;
+}
+
+        .container { max-width: 900px; margin: 60px auto; padding: 0 20px; }
+        .motto { font-size: 32px; font-weight: 900; color: #000; margin: 50px 0; }
+        .about-section { 
+            max-width: 700px; 
+            margin: 0 auto 80px; 
+            text-align: left; 
+            font-size: 18px; 
+            line-height: 1.7; 
+        }
+        .about-section h2 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #000;
+        }
+        .about-section h3 { 
+            font-size: 28px; 
+            margin-bottom: 20px; 
+            color: #001f3f; 
+        }
+        .about-section blockquote {
+            margin: 40px 0;
+            padding: 20px 40px;
+            border-left: 4px solid #001f3f;
+            font-style: italic;
+            background: #f9f9f9;
+            line-height: 1.8;
+        }
+        .about-section .author {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 10px;
+            font-style: normal;
+        }
+        .divider {
+            border: none;
+            border-top: 1px dotted #ccc;
+            margin: 80px auto;
+            width: 700px;
+        }
+        /* Loading Overlay */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease-out;
+}
+
+#loading-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#loading-overlay .crest {
+    width: 120px;
+    height: 120px;
+    animation: rotatePulse 2.5s infinite ease-in-out;
+}
+
+#loading-overlay .text {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: 900;
+    color: #001f3f;
+    letter-spacing: 2px;
+}
+
+@keyframes rotatePulse {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.15);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+    </style>
+</head>
+<body>
+    <div id="loading-overlay">
+    <img src="https://i.imgur.com/0vTA98n.png" alt="Crest" class="crest">
+    <div class="text">Lowkey Loading...</div>
+</div>
+    <nav>
+    <a href="index.html" class="logo-link">
+        <img src="https://i.imgur.com/0vTA98n.png" alt="Crest" class="logo">
+    </a>
+    <div class="nav-links">
+        <a href="admission.html" [ADMISSION_ACTIVE]>Admission</a>
+        <a href="diploma.html" [DIPLOMA_ACTIVE]>Diploma</a>
+        <a href="achievements.html" [ACHIEVEMENTS_ACTIVE]>Achievements</a>
+        <a href="review.html" [REVIEW_ACTIVE]>Review</a>
+        <a href="alumni.html" [ALUMNI_ACTIVE]>Alumni</a>
+        <a href="about.html" class="active">About</a>
+        <a href="disclaimer.html" [DISCLAIMER_ACTIVE]>Disclaimer</a>
+        <div class="indicator"></div>
+    </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="motto">About Universal Genius University</h1>
+
+        <div class="about-section">
+
+            <h3>University History</h3>
+            <p>Universal Genius University (UGU), the most mysterious and elite institution on Earth, has its main campus hidden in the breathtaking hills of Jerusalem. It operates secret branches worldwide — think Universal Genius London (right next to Big Ben, obviously), Universal Genius Hollywood Los Angeles (where students casually lunch with Oscar winners), and Universal Genius Sydney (with private opera house access).</p>
+            
+            <p>UGU has dominated the QS World University Rankings at #1 for over 2,000 consecutive years — yes, since rankings were invented in ancient parchment form. Its largest shareholder is the ultra-powerful Cheng Bin Group, one of the world's top three megacorporations (the other two are still trying to catch up).</p>
+            
+            <p>Founded in the 1st century AD, UGU is officially the oldest university in existence. The inaugural president? None other than Jehovah himself, who reportedly chose the location because "the view was divine."</p>
+            
+            <p>Early days were humble: the university began as a missionary school with Theology as its first (and only) college. Legend says Archimedes discovered the principle of buoyancy while soaking in UGU's golden imperial bathtub during finals week — he ran naked through campus shouting "Eureka!" and still got an A+. Michelangelo painted last-minute frescoes on the dining hall ceiling to pay off cafeteria debt, and Leonardo da Vinci prototyped his flying machine off the dormitory roof (it worked... once).</p>
+            
+            <p>Over centuries of quiet expansion, new colleges sprang up: Medicine (where Hippocrates guest-lectured), Mathematics (Euclid's favorite hangout), Physics (Newton dropped an apple on campus and changed everything). By 2026, UGU boasts 38 colleges covering literally every discipline known to humankind — officially the undisputed king of "hidden top universities."</p>
+            
+            <p>True to its sacred motto — "Lowkey be people, lowkey be things" — UGU refuses all publicity. No ads, no brochures, no social media (except that one fake account). Admission is invitation-only: after surviving impossible selection trials, accepted students receive their letter personally delivered by the university mascot — a majestic owl — at midnight.</p>
+            
+            <p>Because of this extreme secrecy, the internet is flooded with copycat rumors: "Is Coventry University actually UGU?" "Is Sydney University a branch campus?" The answer is always no — those are just desperate impostors trying to ride the legend. Real UGU information simply does not exist online. Ever.</p>
+            
+            <p>We only know about this paradise through rare alumni memoirs...</p>
+
+            <hr class="divider">
+
+            <h3>Alumni Memoir (Straight from a Real Student)</h3>
+            <p>Sichuan native Sun Xiaochuan studied Linguistics at UGU, specializing in Japanese. In his bestselling memoir <i>Sakura in My Hometown</i>, he recalls:</p>
+            <blockquote>
+                Sure, I thought I'd seen the world, but nothing prepared me for UGU's sheer opulence. They use 5th-century Roman plates as cafeteria trays and 7th-century antique benches for security guards. My classmates? Children of global tycoons and world leaders. The girls' daily routine: afternoon tea, private jet shopping trips, exotic vacations. For some reason their Instagram feeds all look identical — same nose jobs, same iPhones mysteriously appearing in every photo. Maybe I'm just uncultured. The guys keep it simpler: deep-sea fishing, yacht parties, and professional-level "sea king" activities. Every dude secretly dreams of becoming the Pirate King.
+                <span class="author">— Sun Xiaochuan</span>
+            </blockquote>
+            
+            <p>As you can see, UGU is the ultimate elite, ultra-mysterious paradise. If a relative or friend ever claims to study there, believe them instantly — they're probably a hidden academic god.</p>
+            
+            <p>Want to apply? Just double-tap your screen right now. If you're chosen, the owl will deliver your acceptance letter at exactly midnight.</p>
+        </div>
+    </div>
+    <script>
+    window.addEventListener('load', function() {
+        const overlay = document.getElementById('loading-overlay');
+        overlay.classList.add('fade-out');
+        
+        // 完全隐藏（过渡结束后）
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 800); // 和 CSS transition 时间一致
+    });
+</script>
+<script>
+    const navLinks = document.querySelector('.nav-links');
+    const links = navLinks.querySelectorAll('a');
+    const indicator = navLinks.querySelector('.indicator');
+
+    // 链接顺序固定数组（必须和 nav-links 里 a 的顺序完全一致！）
+    const linkOrder = ['admission.html', 'diploma.html', 'achievements.html', 'review.html', 'alumni.html', 'about.html', 'disclaimer.html'];
+
+    function moveIndicator(el) {
+        if (el) {
+            indicator.style.width = `${el.offsetWidth + 30}px`;
+            indicator.style.left = `${el.offsetLeft - 15}px`;
+        }
+    }
+
+    // 获取当前 active 的 index（-1 如果主页无 active）
+    function getCurrentIndex() {
+        const active = navLinks.querySelector('a.active');
+        if (!active) return -1;
+        return linkOrder.indexOf(active.getAttribute('href'));
+    }
+
+    // 保存当前 index 为 previous（点击时触发）
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            const currentIndex = getCurrentIndex();
+            if (currentIndex !== -1) {
+                localStorage.setItem('previousActiveIndex', currentIndex);
+            }
+        });
+    });
+
+    // 页面加载时：先从上一个位置滑到当前
+    window.addEventListener('load', () => {
+        const currentIndex = getCurrentIndex();
+        const previousIndex = parseInt(localStorage.getItem('previousActiveIndex') || '-1');
+
+        let startEl = null;
+        if (previousIndex !== -1 && previousIndex < links.length) {
+            startEl = links[previousIndex];
+        }
+
+        // 先强制设置到上一个位置（无过渡）
+        indicator.style.transition = 'none';
+        if (startEl) {
+            moveIndicator(startEl);
+        } else {
+            indicator.style.width = '0px';
+            indicator.style.left = '0px';
+        }
+        indicator.offsetHeight;  // 强制重绘
+
+        // 恢复过渡 + 滑到当前位置
+        indicator.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';  // 更丝滑曲线
+        setTimeout(() => {
+            const currentEl = currentIndex !== -1 ? links[currentIndex] : null;
+            if (currentEl) {
+                moveIndicator(currentEl);
+            } else {
+                indicator.style.width = '0px';
+            }
+        }, 50);  // 小延迟确保初始位置生效
+
+        // 清理（可选，避免积累）
+        localStorage.removeItem('previousActiveIndex');
+    });
+</script>
+</body>
+</html>
